@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎄 Sorteo Navideño Familiar 🎁</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Nieve animada */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2d3436;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .emoji {
+            font-size: 3em;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .loading {
+            color: #636e72;
+            font-size: 1.2em;
+        }
+        
+        .error {
+            color: #d63031;
+            padding: 20px;
+            background: #fff5f5;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .result {
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .nombre {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .sorteo-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .sorteo-card.mayor {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .sorteo-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .sorteo-card .persona {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #636e72;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .sorteo-card .persona {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 Sorteo Navideño 🎄</h1>
+            <div class="emoji">🎁</div>
+        </div>
+        
+        <div id="loading" class="loading">
+            Cargando tu sorteo...
+        </div>
+        
+        <div id="error" class="error" style="display:none;">
+            ❌ Link inválido o expirado
+        </div>
+        
+        <div id="result" class="result">
+            <div class="nombre" id="nombre"></div>
+            
+            <div class="sorteo-card mayor">
+                <h3>🎁 Regalo a Mayor</h3>
+                <div class="persona" id="mayor"></div>
+            </div>
+            
+            <div class="sorteo-card" id="menor-card">
+                <h3>🎈 Regalo a Menor</h3>
+                <div class="persona" id="menor"></div>
+            </div>
+            
+            <div class="footer">
+                ¡Felices Fiestas! 🎊
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Crear nieve
+        function createSnowflakes() {
+            const snowflakes = ['❅', '❆', '❄'];
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                document.body.appendChild(snowflake);
+            }
+        }
+        
+        createSnowflakes();
+        
+        // Decodificar sorteo
+        function decodeData(code) {
+            try {
+                const decoded = atob(code.replace(/-/g, '+').replace(/_/g, '/'));
+                return JSON.parse(decoded);
+            } catch (e) {
+                return null;
+            }
+        }
+        
+        // Obtener código de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            
+            if (!code) {
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+            
+            const data = decodeData(code);
+            
+            if (!data) {
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+            
+            // Mostrar resultado
+            document.getElementById('nombre').textContent = data.nombre.toUpperCase();
+            document.getElementById('mayor').textContent = data.mayor;
+            
+            if (data.menor) {
+                document.getElementById('menor').textContent = data.menor;
+            } else {
+                document.getElementById('menor-card').style.display = 'none';
+            }
+            
+            document.getElementById('result').classList.add('show');
+        }, 1000);
+    </script>
+</body>
+</html>
