@@ -6,6 +6,10 @@ sorteo_resultado.xlsx
 twilio_recovery_code.txt
 enviar_whatsapp.py
 enviar_whatsapp_selenium.py
+generar_web.py
+sorteo.py
+INSTRUCCIONES_GITHUB.md
+PyWhatKit_DB.txt
 
 # Archivos temporales
 *.pyc
