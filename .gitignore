@@ -1,0 +1,13 @@
+# Archivos sensibles - NO SUBIR A GITHUB
+consideraciones.txt
+base.xlsx
+links_para_enviar.txt
+sorteo_resultado.xlsx
+twilio_recovery_code.txt
+enviar_whatsapp.py
+enviar_whatsapp_selenium.py
+
+# Archivos temporales
+*.pyc
+__pycache__/
+.vscode/
