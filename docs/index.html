@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #165B33 0%, #BB2528 50%, #165B33 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,6 +21,19 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
         
         /* Nieve animada */
@@ -40,16 +53,17 @@
         }
         
         .container {
-            background: white;
-            border-radius: 20px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
             padding: 40px;
-            max-width: 500px;
+            max-width: 550px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 3px #FFD700;
             text-align: center;
             animation: slideIn 0.5s ease-out;
             position: relative;
             z-index: 1;
+            border: 5px solid #165B33;
         }
         
         @keyframes slideIn {
@@ -68,15 +82,17 @@
         }
         
         .header h1 {
-            color: #2d3436;
+            color: #165B33;
             font-size: 2.5em;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
         .emoji {
             font-size: 3em;
             margin: 20px 0;
             animation: bounce 2s infinite;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
         }
         
         @keyframes bounce {
@@ -112,23 +128,45 @@
         }
         
         .nombre {
-            font-size: 2em;
-            color: #667eea;
-            margin-bottom: 30px;
+            font-size: 1.3em;
+            color: #BB2528;
+            margin-bottom: 10px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(187, 37, 40, 0.3);
+        }
+        
+        .nombre-grande {
+            font-size: 2.2em;
+            color: #165B33;
+            margin-bottom: 20px;
             font-weight: bold;
+            text-transform: capitalize;
+        }
+        
+        .te-corresponde {
+            font-size: 1.2em;
+            color: #636e72;
+            margin-bottom: 25px;
+            font-style: italic;
         }
         
         .sorteo-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #BB2528 0%, #8B1A1D 100%);
             color: white;
-            padding: 25px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 20px;
             margin: 15px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(187, 37, 40, 0.4);
+            border: 3px solid #FFD700;
         }
         
         .sorteo-card.mayor {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #165B33 0%, #0D3B1F 100%);
+            border: 3px solid #FFD700;
         }
         
         .sorteo-card h3 {
@@ -179,7 +217,8 @@
         </div>
         
         <div id="result" class="result">
-            <div class="nombre" id="nombre"></div>
+            <div class="nombre-grande" id="nombre"></div>
+            <div class="te-corresponde">🎅 TE CORRESPONDE REGALAR A: 🎅</div>
             
             <div class="sorteo-card mayor">
                 <h3>🎁 Regalo a Mayor</h3>
@@ -192,7 +231,7 @@
             </div>
             
             <div class="footer">
-                ¡Felices Fiestas! 🎊
+                ¡Felices Fiestas! 🎊✨
             </div>
         </div>
     </div>
@@ -245,11 +284,11 @@
             }
             
             // Mostrar resultado
-            document.getElementById('nombre').textContent = data.nombre.toUpperCase();
-            document.getElementById('mayor').textContent = data.mayor;
+            document.getElementById('nombre').textContent = data.nombre.charAt(0).toUpperCase() + data.nombre.slice(1);
+            document.getElementById('mayor').textContent = data.mayor.charAt(0).toUpperCase() + data.mayor.slice(1);
             
             if (data.menor) {
-                document.getElementById('menor').textContent = data.menor;
+                document.getElementById('menor').textContent = data.menor.charAt(0).toUpperCase() + data.menor.slice(1);
             } else {
                 document.getElementById('menor-card').style.display = 'none';
             }
